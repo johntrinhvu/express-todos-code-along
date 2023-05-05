@@ -3,6 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var methodOverride = require('method-override');
 
 var indexRouter = require('./routes/index');
 var todosRouter = require('./routes/todos');
@@ -17,8 +18,7 @@ app.set('view engine', 'ejs');
 // app.use([starts with path], <middleware fn> [,<middleware fn>])
 
 app.use(function(req, res, next) {
-  console.log("Hello SEI!");
-  //add a time property to the res.locals object
+  // add a time property to the res.locals object
   // time property will be accessing when rendering a view
   res.locals.time = new Date().toLocaleTimeString();
   next(); // pass the req to the next middleware
@@ -43,6 +43,7 @@ app.use(cookieParser());
 
 // if the req is for a static asset, returns the file
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(methodOverride('_method'));
 
 // the first arg is the "starts with" path
 // the paths within the routes modules are appended to the starts with paths
