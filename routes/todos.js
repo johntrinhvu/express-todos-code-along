@@ -9,7 +9,10 @@ var todosCtrl = require('../controllers/todos');
 // GET /todos
 router.get('/', todosCtrl.index);
 
+// GET /todos/new
+router.get('/new', todosCtrl.new);
+
 // GET /todos/:id
-router.get("/:id", todosCtrl.show);
+router.get('/:id', todosCtrl.show);
 
 module.exports = router;

@@ -1,9 +1,10 @@
 // controllers/todos.js
-var Todo = require("../models/todo");
+var Todo = require('../models/todo');
 
 module.exports = {
     index,
-    show
+    show,
+    new: newTodo
 
 };
 
@@ -11,7 +12,7 @@ module.exports = {
 function index(req, res) {
     res.render('todos/index', {
       todos: Todo.getAll(),
-      title: "All To-Dos"
+      title: 'All To-Dos'
 
     });
 }
@@ -19,7 +20,12 @@ function index(req, res) {
 function show(req, res) {
     res.render('todos/show', {
         todo: Todo.getOne(req.params.id),
-        title: "To-Do Details"
+        title: 'To-Do Details'
         
     });
+}
+
+function newTodo(req, res) {
+    res.render('todos/new', { title: 'New Todo' });
+    
 }

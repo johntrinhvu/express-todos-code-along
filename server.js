@@ -13,10 +13,35 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+// mount middleware into the middleware/request pipeline
+// app.use([starts with path], <middleware fn> [,<middleware fn>])
+
+app.use(function(req, res, next) {
+  console.log("Hello SEI!");
+  //add a time property to the res.locals object
+  // time property will be accessing when rendering a view
+  res.locals.time = new Date().toLocaleTimeString();
+  next(); // pass the req to the next middleware
+
+});
+
+
+
+// log in the terminal the HTTP request info
 app.use(logger('dev'));
+
+// processes data sent in the body of the request if it's json
 app.use(express.json());
+
+// processes data sent in the "form" body of the request
+// will create a property on req.body for each <input>, <select>, or <textarea>
+// in the <form>
 app.use(express.urlencoded({ extended: false }));
+
+// adds a cookies property for each cookie in the request
 app.use(cookieParser());
+
+// if the req is for a static asset, returns the file
 app.use(express.static(path.join(__dirname, 'public')));
 
 // the first arg is the "starts with" path
@@ -27,6 +52,7 @@ app.use('/todos', todosRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
+
 });
 
 // error handler
@@ -38,6 +64,7 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render('error');
+
 });
 
 module.exports = app;
